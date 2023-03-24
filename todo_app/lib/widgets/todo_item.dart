@@ -8,6 +8,7 @@ class ToDoItem extends StatelessWidget {
   final onToDoChanged;
   final onDeleteItem;
   final changedColor;
+  final onEditTodo;
 
   const ToDoItem({
     Key? key,
@@ -15,6 +16,7 @@ class ToDoItem extends StatelessWidget {
     required this.changedColor,
     required this.onToDoChanged,
     required this.onDeleteItem,
+    required this.onEditTodo,
   }) : super(key: key);
 
   @override
@@ -46,19 +48,33 @@ class ToDoItem extends StatelessWidget {
           padding: const EdgeInsets.all(0),
           margin: const EdgeInsets.symmetric(vertical: 12),
           height: 35,
-          width: 35,
+          width: 80,
           decoration: BoxDecoration(
-            color: tdRed,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: IconButton(
             color: Colors.white,
-            iconSize: 18,
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              // print('Clicked on delete icon');
-              onDeleteItem(todo.id);
-            },
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              IconButton(
+                color: tdBlack,
+                padding: const EdgeInsets.all(0),
+                iconSize: 18,
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  onEditTodo(todo.id);
+                },
+              ),
+              IconButton(
+                color: tdBlack,
+                padding: const EdgeInsets.all(0),
+                iconSize: 18,
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  // print('Clicked on delete icon');
+                  onDeleteItem(todo.id);
+                },
+              ),
+            ],
           ),
         ),
       ),

@@ -19,17 +19,23 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final todosList = ToDo.todoList();
   List<ToDo> _foundToDo = [];
-  final _todoController = TextEditingController();
-  final _dlTodoController = TextEditingController();
+  final TextEditingController _todoController = TextEditingController();
   late DateTime _dateTime;
   late Timer _timer;
   TimeOfDay _deadline = TimeOfDay.now();
 
   @override
+  void dispose() {
+    _todoController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     _foundToDo = todosList;
-    _dateTime = DateTime.now().add(Duration(days: 1));
-    _timer = Timer.periodic(Duration(seconds: 1), _onTick);
+    _dateTime = DateTime.now().add(const Duration(days: 1));
+    _timer = Timer.periodic(const Duration(seconds: 1), _onTick);
+
     super.initState();
   }
 
@@ -57,7 +63,7 @@ class _HomeState extends State<Home> {
                           bottom: 20,
                         ),
                         child: const Text(
-                          'All ToDos',
+                          'Danh Sách công việc',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
@@ -70,6 +76,7 @@ class _HomeState extends State<Home> {
                           onToDoChanged: _handleToDoChange,
                           onDeleteItem: _deleteToDoItem,
                           changedColor: _changedColor,
+                          onEditTodo: _editTodo,
                         ),
                     ],
                   ),
@@ -106,7 +113,7 @@ class _HomeState extends State<Home> {
                   child: TextField(
                     controller: _todoController,
                     decoration: const InputDecoration(
-                        hintText: 'Add a new todo item',
+                        hintText: 'Thêm công việc mới',
                         border: InputBorder.none),
                   ),
                 ),
@@ -118,7 +125,7 @@ class _HomeState extends State<Home> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    _selectTime(context);
+                    if (_todoController.text != "") _selectTime(context);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: tdBlue,
@@ -155,33 +162,30 @@ class _HomeState extends State<Home> {
     if (newTime != null) {
       setState(() {
         _deadline = newTime;
+
         _addToDoItem(
             _todoController.text, "${_deadline.hour} : ${_deadline.minute}");
       });
+      _changedColor();
     }
   }
 
-  void _changedColor(
-    ToDo todo,
-  ) {
-    if ((_dateTime.hour > _deadline.hour) ||
-        ((_dateTime.hour == _deadline.hour) &&
-            (_dateTime.minute >= _deadline.minute))) {
-      setState(() {
-        todo.checkTime = !todo.checkTime;
-      });
+  void _changedColor() {
+    for (var item in todosList) {
+      List<String> hourMinute = item.deadline.split(' : ');
+      if ((_dateTime.hour > int.parse(hourMinute[0])) ||
+          ((_dateTime.hour == int.parse(hourMinute[0])) &&
+              (_dateTime.minute >= int.parse(hourMinute[1])))) {
+        setState(() {
+          if (item.checkTime == false) item.checkTime = !item.checkTime;
+        });
+      }
     }
   }
 
   void _handleToDoChange(ToDo todo) {
     setState(() {
       todo.isDone = !todo.isDone;
-      todo.checkTime = !todo.checkTime;
-      print((_dateTime.hour > _deadline.hour) ||
-          ((_dateTime.hour == _deadline.hour) &&
-              (_dateTime.minute >= _deadline.minute)));
-      print(_dateTime.hour);
-      print(_deadline.hour);
     });
   }
 
@@ -224,10 +228,17 @@ class _HomeState extends State<Home> {
     if (_dateTime.isBefore(now)) {
       _timer.cancel();
     } else {
-      setState(() {
-        _changedColor;
-      });
+      setState(() {});
     }
+  }
+
+  void _editTodo(String id) {
+    setState(() {
+      final newText = _todoController.text;
+      todosList.forEach((item) {
+        if (item.id == id) item.todoText = newText;
+      });
+    });
   }
 
   Widget searchBox() {
@@ -251,7 +262,7 @@ class _HomeState extends State<Home> {
             minWidth: 25,
           ),
           border: InputBorder.none,
-          hintText: 'Search',
+          hintText: 'Tìm kiếm',
           hintStyle: TextStyle(color: tdGrey),
         ),
       ),
@@ -271,7 +282,6 @@ class _HomeState extends State<Home> {
                 DateFormat('HH:mm:ss').format(DateTime.now()),
                 style: const TextStyle(fontSize: 60, color: tdBlack),
               ),
-              const SizedBox(height: 20),
             ],
           ),
         ),

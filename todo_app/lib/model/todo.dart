@@ -1,7 +1,7 @@
 class ToDo {
   String? id;
   String? todoText;
-  dynamic? deadline;
+  dynamic deadline;
   bool isDone;
   bool checkTime;
 
@@ -18,8 +18,8 @@ class ToDo {
       // ToDo(
       //     id: '01',
       //     todoText: 'thức dậy chào ngày mới',
-      //     dateline: '06:00',
-      //     isDone: true),
+      //     deadline: '06:00',
+      //     isDone: true)
       // ToDo(id: '02', todoText: 'ăn sáng', dateline: '06:30', isDone: true),
       // ToDo(
       //   id: '03',
