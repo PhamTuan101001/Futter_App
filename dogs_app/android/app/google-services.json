@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "604456845870",
+    "project_id": "fir-getx-dogapp",
+    "storage_bucket": "fir-getx-dogapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604456845870:android:6c52c29234b728adda15bf",
+        "android_client_info": {
+          "package_name": "com.example.dogs_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604456845870-1tu2elcubol8vpj8bc1f02d0urlheksd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhg1wgx7DGymTll3e5vi4vMcYo-n1JeG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604456845870-1tu2elcubol8vpj8bc1f02d0urlheksd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
